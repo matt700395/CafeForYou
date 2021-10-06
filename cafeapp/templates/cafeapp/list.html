@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <h1>index page : cafe list</h1>
+    <a href="{% url 'cafeapp:create' %}">create cafe</a>
+    <br>
+    a
+    {% for cafe in cafe_list %}
+    <div>
+        cafe name : {{cafe.name}}<br>
+        cafe owner : {{cafe.owner}}<br>
+        cafe content : {{cafe.content}}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

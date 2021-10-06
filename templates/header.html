@@ -1,0 +1,16 @@
+<div>
+    {% if user.is_authenticated %}
+        {{ user }}님 환영합니다. /
+    <span>
+        <a href="{% url 'accountapp:logout' %}">logout</a>
+    </span>
+    {% else %}
+    <span>
+        <a href="{% url 'accountapp:create' %}">create</a>
+    </span>
+    <span>
+        <a href="{% url 'accountapp:login' %}">login</a>
+    </span>
+    {% endif %}
+
+</div>
