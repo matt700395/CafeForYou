@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from cafeapp.models import Order
+from profileapp.models import Profile
 
-admin.site.register(Order)
+admin.site.register(Profile)
