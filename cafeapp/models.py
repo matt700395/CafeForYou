@@ -6,26 +6,26 @@ class Cafe(models.Model):
     id = models.BigAutoField(help_text="Cafe ID", primary_key=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cafe_owner')
     name = models.CharField(max_length=20, null=True)
-    content = models.TextField(max_length=500, null=True)
+    description = models.TextField(max_length=500, null=True)
 
 class Product(models.Model):
-    cafe = models.ForeignKey(Cafe, related_name="cafe_product", on_delete=models.CASCADE)
+    cafe = models.ForeignKey(Cafe, related_name="product", on_delete=models.CASCADE)
 
     image = models.ImageField(upload_to='product/', null=True)
     name = models.CharField(max_length=20, null=True)
-    content = models.TextField(max_length=500, null=True)
+    description = models.TextField(max_length=500, null=True)
     price = models.IntegerField()
     isSoldOut = models.BooleanField()
+    def __str__(self):
+        return self.name
 
 class Order(models.Model):
     id = models.BigAutoField(help_text="Order ID", primary_key=True)
-    cafe = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cafe_order')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order')
+    registered_date = models.DateTimeField(auto_now_add=True, verbose_name="등록시간")
+    quantity = models.IntegerField(verbose_name="수량")
 
-    #count를 위한 model설정을 해야함!
-    PERSON_CHOICES = [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6')]
-    personnel = models.CharField(max_length=2, choices=PERSON_CHOICES, default='1')
-    #문제, 최대 개수의 제한이 문제, '1','1'은 줄일 수 없을까? 이게 최선은 아닌듯함
-    #user_name = 유저 데이터도 받아서 카페 사장님이 확인할 수 있게끔 해야함
 
     # name = models.CharField(max_length=20, label='제품명', null=True)
     # price = models.IntegerField(label='가격')

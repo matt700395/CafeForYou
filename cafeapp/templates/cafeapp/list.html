@@ -4,13 +4,18 @@
     <h1>index page : cafe list</h1>
     <a href="{% url 'cafeapp:create' %}">create cafe</a>
     <br>
-    a
+
     {% for cafe in cafe_list %}
     <div>
+        ============================<br>
+        cafe id : {{cafe.id}}<br>
         cafe name : {{cafe.name}}<br>
         cafe owner : {{cafe.owner}}<br>
-        cafe content : {{cafe.content}}
+        cafe content : {{cafe.content}}<br>
+        <a href="{% url 'cafeapp:detail' pk=cafe.id %}"><button>해당 카페</button></a><br>
+
     </div>
+
     {% endfor %}
 </div>
 {% endblock %}
