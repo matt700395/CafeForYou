@@ -9,7 +9,8 @@ class CafeCreationForm(ModelForm):
         model = Cafe
         fields = ['name', 'description']
 
-class ProductOrderForm(ModelForm):
+
+class OrderCreateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['quantity']
+        fields = ['name', 'email', 'address', 'postal_code', 'city', 'paid']

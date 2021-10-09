@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -11,9 +12,10 @@ from django.views.generic import CreateView, DeleteView, ListView, DetailView, U
 from django.views.generic.edit import FormMixin, FormView
 
 from cafeapp.decorators import cafe_ownership_required
-from cafeapp.forms import CafeCreationForm, ProductOrderForm
-from cafeapp.models import Cafe, Product, Order
+from cafeapp.forms import CafeCreationForm, OrderCreateForm
+from cafeapp.models import Cafe, Product, OrderItem
 from cartapp.forms import CartAddProductForm
+from cartapp.models import Cart
 
 
 @method_decorator(login_required, 'get')
@@ -76,3 +78,33 @@ class CafeListView(ListView):
     #
     #     return queryset
 
+
+def order_create(request):
+    cart = Cart(request)
+    # user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        form = OrderCreateForm(request.POST)
+
+        if form.is_valid():#에러  발생
+            # temp_order = form.save(commit=False)
+            # temp_order.name =
+            order = form.save()
+            # order = form.save(commit=False)
+            # order.name = user.name
+            print("in form.is_valid!!")
+            for item in cart:
+                print("item: ", item)
+                OrderItem.objects.create(
+                    order=order,
+                    product=item['product'],
+                    price=item['price'],
+                    quantity=item['quantity']
+                )
+            cart.clear()
+        else:
+            print("===========")
+            print(form.errors)
+        return render(request, 'cafeapp/goodbye.html', {'order': order})
+    else:
+        form = OrderCreateForm()
+    return render(request, 'cafeapp/order.html', {'form': form})
