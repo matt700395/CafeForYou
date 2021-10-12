@@ -25,6 +25,7 @@ urlpatterns = [
     path('profiles/', include('profileapp.urls')),
     path('cafe/', include('cafeapp.urls')),
     path('carts/', include('cartapp.urls')),
+    path('orders/', include('orderapp.urls')),
 
     path('', CafeListView.as_view(), name='index')
 ]

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from cafeapp.models import Cafe, Order, Product
+from cafeapp.models import Cafe, Product
 
 
 class CafeCreationForm(ModelForm):
@@ -14,7 +14,3 @@ class ProductCreationForm(ModelForm):
         model = Product
         fields = ['image', 'name', 'description', 'price', 'isSoldOut']
 
-class OrderCreateForm(forms.ModelForm):
-    class Meta:
-        model = Order
-        fields = ['name', 'email', 'address', 'postal_code', 'city', 'paid']

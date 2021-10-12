@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'profileapp',
     'cafeapp',
     'cartapp',
+    'orderapp',
 ]
 
 MIDDLEWARE = [

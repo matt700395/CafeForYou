@@ -18,7 +18,6 @@ urlpatterns = [
     path('delete_product/<int:pk>', ProductDeleteView.as_view(), name='delete_product'),
 
     path('list/', CafeListView.as_view(), name='list'),
-    url(r'^order/$', views.order_create, name='order_create'),
     # url(r'^order/(?P<user_id>\d+)/$', views.order_create, name='order_create'),
 
 ]

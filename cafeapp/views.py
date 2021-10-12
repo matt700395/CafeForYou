@@ -12,8 +12,8 @@ from django.views.generic import CreateView, DeleteView, ListView, DetailView, U
 from django.views.generic.edit import FormMixin, FormView
 
 from cafeapp.decorators import cafe_ownership_required, product_ownership_required
-from cafeapp.forms import CafeCreationForm, OrderCreateForm, ProductCreationForm
-from cafeapp.models import Cafe, Product, OrderItem
+from cafeapp.forms import CafeCreationForm, ProductCreationForm
+from cafeapp.models import Cafe, Product
 from cartapp.forms import CartAddProductForm
 from cartapp.models import Cart
 
@@ -118,32 +118,3 @@ class ProductDeleteView(DeleteView):
     template_name = 'cafeapp/delete_product.htl'
 
 
-def order_create(request):
-    cart = Cart(request)
-    # user = get_object_or_404(User, id=user_id)
-    if request.method == 'POST':
-        form = OrderCreateForm(request.POST)
-
-        if form.is_valid():#에러  발생
-            # temp_order = form.save(commit=False)
-            # temp_order.name =
-            order = form.save()
-            # order = form.save(commit=False)
-            # order.name = user.name
-            print("in form.is_valid!!")
-            for item in cart:
-                print("item: ", item)
-                OrderItem.objects.create(
-                    order=order,
-                    product=item['product'],
-                    price=item['price'],
-                    quantity=item['quantity']
-                )
-            cart.clear()
-        else:
-            print("===========")
-            print(form.errors)
-        return render(request, 'cafeapp/goodbye.html', {'order': order})
-    else:
-        form = OrderCreateForm()
-    return render(request, 'cafeapp/order.html', {'form': form})
