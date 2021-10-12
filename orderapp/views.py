@@ -11,14 +11,15 @@ def order_create(request):
     # user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
-
         if form.is_valid():#정상적인 접근
-            order = form.save()
-            print("in form.is_valid!!")
+
+            temp_order = form.save(commit=False)
+            temp_order.user = request.user
+            temp_order = form.save()
             for item in cart:
                 print("item: ", item)
                 OrderItem.objects.create(
-                    order=order,
+                    order=temp_order,
                     product=item['product'],
                     price=item['price'],
                     quantity=item['quantity']
@@ -28,7 +29,7 @@ def order_create(request):
             print("=============================================\n\t\tform error\n=============================================")
             print(form.errors)
             print("=============================================\n")
-        return render(request, 'orderapp/goodbye.html', {'order': order})#얘를 윗쪽 if에 넣고 여긴 에러페이지 넣어야함.
+        return render(request, 'orderapp/goodbye.html', {'order': temp_order})#얘를 윗쪽 if에 넣고 여긴 에러페이지 넣어야함.
     else:
         form = OrderCreateForm()
     return render(request, 'orderapp/order.html', {'form': form})

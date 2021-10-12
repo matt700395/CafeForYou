@@ -1,15 +1,19 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
+from django.db.models import OneToOneField
+
 from cafeapp.models import Product
 
 
 class Order(models.Model):
-    name = models.CharField(max_length=60)
-    email = models.EmailField()
-    address = models.CharField(max_length=150)
-    postal_code = models.CharField(max_length=30)
-    city = models.CharField(max_length=100)
+    # name = models.CharField(max_length=60)
+    # email = models.EmailField()
+    # address = models.CharField(max_length=150)
+    # postal_code = models.CharField(max_length=30)
+    # city = models.CharField(max_length=100)
+    user = OneToOneField(User, on_delete=models.CASCADE, related_name='order')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
