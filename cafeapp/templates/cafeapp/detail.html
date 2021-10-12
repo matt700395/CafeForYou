@@ -12,7 +12,7 @@
                     <div>
                         <div>
                             <div style="padding-left: 20px">
-                                <h3>{{ product.name }}</h3>
+                                <h3>{{ product.name }}</h3><a href="{% url 'cafeapp:update_product' pk=product.pk %}">수정</a>
                                 <img src="{{ product.image.url }}">
                                 <p class="text-muted">가격 : {{ product.price }}원</p>
                                 <form action="{% url 'cartapp:cart_add' product.id %}" method="post">
@@ -51,7 +51,7 @@
                 </div>
             </div><!-- /.blog-post -->
             {% endfor %}
-            <a href="{% url 'cartapp:cart_detail' %}">카트 보기</a>
+            <a href="{% url 'cafeapp:create_product' %}">제품 등록</a>
         </div><!-- /.blog-main -->
     </div><!-- /.row -->
 

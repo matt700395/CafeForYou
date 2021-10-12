@@ -1,14 +1,17 @@
 <div>
-    #로그인 시
     {% if user.is_authenticated %}
-        {{ user }}님 환영합니다. /
+    <span>
+        {{ user }}님 환영합니다.
+    </span>
     <span>
         <a href="{% url 'accountapp:logout' %}">logout</a>
     </span>
     <span>
         <a href="{% url 'profileapp:create' %}">profile create</a>
     </span>
-
+    <span>
+        <a href="{% url 'cartapp:cart_detail' %}">장바구니</a>
+    </span>
     {% else %}
     <span>
         <a href="{% url 'accountapp:create' %}">create</a>

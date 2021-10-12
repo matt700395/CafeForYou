@@ -11,8 +11,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DeleteView, ListView, DetailView, UpdateView
 from django.views.generic.edit import FormMixin, FormView
 
-from cafeapp.decorators import cafe_ownership_required
-from cafeapp.forms import CafeCreationForm, OrderCreateForm
+from cafeapp.decorators import cafe_ownership_required, product_ownership_required
+from cafeapp.forms import CafeCreationForm, OrderCreateForm, ProductCreationForm
 from cafeapp.models import Cafe, Product, OrderItem
 from cartapp.forms import CartAddProductForm
 from cartapp.models import Cart
@@ -35,6 +35,7 @@ class CafeCreateView(CreateView):
         return reverse('cafeapp:detail', kwargs={'pk': self.object.pk})
 
 
+
 class CafeDetailView(DetailView):
     model = Cafe
     context_object_name = 'target_cafe'
@@ -43,6 +44,7 @@ class CafeDetailView(DetailView):
         product_list = Product.objects.filter(cafe=self.object.pk)
         cart_product_form = CartAddProductForm()
         return super(CafeDetailView, self).get_context_data(product_list=product_list, cart_product_form=cart_product_form, **kwargs)
+
 
 @method_decorator(cafe_ownership_required, 'get')
 @method_decorator(cafe_ownership_required, 'post')
@@ -77,6 +79,43 @@ class CafeListView(ListView):
     #     queryset = paginator.get_page(page)
     #
     #     return queryset
+
+@method_decorator(login_required, 'get')
+@method_decorator(login_required, 'post')
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductCreationForm
+    template_name = 'cafeapp/create_product.html'
+
+    def form_valid(self, form):
+        temp_product = form.save(commit=False)
+        temp_product.cafe = self.request.user.cafe
+        temp_product.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('cafeapp:detail', kwargs={'pk': self.request.user.cafe.pk})
+
+
+@method_decorator(product_ownership_required, 'get')
+@method_decorator(product_ownership_required, 'post')
+class ProductUpdateView(UpdateView):
+    model = Product
+    context_object_name = 'target_product'
+    form_class = ProductCreationForm
+    template_name = 'cafeapp/update_product.html'
+
+    def get_success_url(self):
+        return reverse('cafeapp:detail', kwargs={'pk': self.request.user.cafe.pk})
+
+
+@method_decorator(product_ownership_required, 'get')
+@method_decorator(product_ownership_required, 'post')
+class ProductDeleteView(DeleteView):
+    model = Product
+    context_object_name = 'target_product'
+    success_url = reverse_lazy('')
+    template_name = 'cafeapp/delete_product.htl'
 
 
 def order_create(request):
