@@ -1,24 +1,13 @@
 <div>
+    <a href="{% url 'index' %}">메인</a>
     {% if user.is_authenticated %}
-    <span>
-        {{ user }}님 환영합니다.
-    </span>
-    <span>
-        <a href="{% url 'accountapp:logout' %}">logout</a>
-    </span>
-    <span>
-        <a href="{% url 'profileapp:create' %}">profile create</a>
-    </span>
-    <span>
-        <a href="{% url 'cartapp:cart_detail' %}">장바구니</a>
-    </span>
+    {{ user }}님 환영합니다.
+    <a href="{% url 'accountapp:logout' %}">logout</a>
+    <a href="{% url 'profileapp:create' %}">profile create</a>
+    <a href="{% url 'cartapp:cart_detail' %}">장바구니</a>
     {% else %}
-    <span>
-        <a href="{% url 'accountapp:create' %}">create</a>
-    </span>
-    <span>
-        <a href="{% url 'accountapp:login' %}">login</a>
-    </span>
+    <a href="{% url 'accountapp:create' %}">create</a>
+    <a href="{% url 'accountapp:login' %}">login</a>
     {% endif %}
 
 </div>
