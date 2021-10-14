@@ -13,7 +13,7 @@ services:
       - 80:80
 
   django_container_gunicorn:
-    image: cfy_image:1
+    image: cfu_image:2
     networks:
       - network
     volumes:
