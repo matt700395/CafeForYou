@@ -1,5 +1,4 @@
 asgiref==3.4.1
-cart==1.2.1
 Django==3.2.8
 django-environ==0.7.0
 Pillow==8.3.2

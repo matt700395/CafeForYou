@@ -9,7 +9,7 @@
         <a href="{% url 'profileapp:create' %}"><span>profile create</span></a>
         <a href="{% url 'cartapp:cart_detail' %}"><span>장바구니</span></a>
         {% else %}
-        <a href="{% url 'accountapp:create' %}"><span>create</span></a>
+        <a href="{% url 'accountapp:create' %}"><span>Sign in</span></a>
         <a href="{% url 'accountapp:login' %}"><span>login</span></a>
         {% endif %}
     </div>
