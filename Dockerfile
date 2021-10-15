@@ -2,7 +2,7 @@ FROM python:3.7.0
 
 WORKDIR /home/
 
-RUN echo "upgrade pip"
+RUN echo "clone sangwoo branch"
 
 #RUN git clone https://github.com/matt700395/sandbox2.git
 RUN git clone https://github.com/dk7648/CafeForYou.git
