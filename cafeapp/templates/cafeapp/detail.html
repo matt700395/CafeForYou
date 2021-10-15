@@ -19,7 +19,7 @@
                                 <p>가격 : {{ product.price }}원</p>
                                 <form action="{% url 'cartapp:cart_add' product.id %}" method="post">
                                     {% csrf_token %}
-                                    <!--                                    <textarea>{{ cart_product_form }}</textarea>-->
+                                    <!--<textarea>{{ cart_product_form }}</textarea>-->
                                     <tr>
                                         <th><label for="id_quantity">수량:</label></th>
                                         <td>
