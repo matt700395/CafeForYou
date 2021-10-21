@@ -9,5 +9,4 @@ app_name = 'orderapp'
 urlpatterns = [
     url(r'^order/$', views.order_create, name='order_create'),
     path('list/', OrderListView.as_view(), name='list'),
-
 ]

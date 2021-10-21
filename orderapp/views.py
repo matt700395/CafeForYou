@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from cartapp.models import Cart
 from orderapp.forms import OrderCreateForm
@@ -33,14 +33,26 @@ def order_create(request):
             temp_order.user = request.user
             # temp_order.cafe = cafe??
             temp_order = form.save()
+
+            cafe = None
             for item in cart:
-                print("item: ", item)
+                print("item: ", item['product'].cafe)
+                if cafe == None:
+                    cafe = item['product'].cafe
+                    temp_order.cafe = cafe
+                    temp_order = form.save()
+                elif cafe != item['product'].cafe:
+                    print("======== 카페 정보가 다른 제품이 있습니다. =========\n")
+                    temp_order.delete()
+                    return render(request, 'error.html')
+
                 OrderItem.objects.create(
                     order=temp_order,
                     product=item['product'],
                     price=item['price'],
                     quantity=item['quantity']
                 )
+
             cart.clear()
         else:#form에 문제있을 시
             print("=============================================\n\t\tform error\n=============================================")

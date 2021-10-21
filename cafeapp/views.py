@@ -84,6 +84,13 @@ class CafeListView(ListView):
     context_object_name = 'cafe_list'
     ordering = ['-id']
     template_name = 'cafeapp/list.html'
+
+    # 카트 초기화
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     cart = Cart(self.request)
+    #     cart.clear()
+    #     return super(CafeListView, self).get_context_data(**kwargs)
+
     # def get_queryset(self):
     #     temp_list = Cafe.objects.filter()
     #
