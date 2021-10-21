@@ -24,6 +24,7 @@
             <table class="table table-striped table-hover">
                 <thead style="background-color: #5AC8FA">
                     <tr>
+                        <th>Cafe</th>
                         <th>Image</th>
                         <th>Product</th>
                         <th>Quantity</th>
@@ -36,6 +37,9 @@
                 {% for item in cart %}
                     {% with product=item.product  %}
                         <tr>
+                            <td>
+                                {{product.cafe.name}}
+                            </td>
                             <td>
                                 <a href="{{ product.get_absolute_url }}">
                                     <img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
