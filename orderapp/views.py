@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from threading import Timer
 
 from django.contrib.auth.models import User
@@ -18,6 +19,9 @@ class OrderListView(ListView):
     template_name = 'orderapp/list.html'
 
     def get_context_data(self, *, object_list=Order, **kwargs):
+        #삭제 시간 조절하는곳
+        object_list.objects.filter(created__lte=datetime.now() - timedelta(minutes=5)).delete()
+
         order_list = object_list.objects.filter(cafe=self.request.user.cafe)
         # if order_list.objects.filter(created=)
         return super(OrderListView, self).get_context_data(order_list=order_list, **kwargs)
