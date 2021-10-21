@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  {{user.cafe.name}}
+  <br><br>
+  ============================= list =======================================<br>
+  {% for order in order_list %}
+    {% now "Y년 m월 d일 - G시 i분 s초" %}<br>
+    {{order.cafe.name}} / {{order.user}} / {{order.user.profile.name}} / {{order.user.profile.age}} / {{order.user.profile.grade}}<br>
+  {% for item in order.items.all%}
+
+  제품명:{{item.product}}, 가격:{{item.price}}원, 수량:{{item.quantity}}개<br>
+  {% endfor %}
+    / created : {{order.created | date:'Y년 m월 d일 - G시 i분 s초'}} / updated : {{order.updated}}<br>
+  =======================================================================<br>
+  {% endfor %}
+</div>
+{% endblock %}

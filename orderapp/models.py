@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 from django.db.models import OneToOneField
 
-from cafeapp.models import Product
+from cafeapp.models import Product, Cafe
 
 
 class Order(models.Model):
@@ -14,6 +14,7 @@ class Order(models.Model):
     # postal_code = models.CharField(max_length=30)
     # city = models.CharField(max_length=100)
     user = OneToOneField(User, on_delete=models.CASCADE, related_name='order')
+    cafe = OneToOneField(Cafe, on_delete=models.CASCADE, related_name='order', null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
