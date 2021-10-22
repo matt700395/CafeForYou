@@ -14,7 +14,10 @@
                             <div style="padding-left: 20px">
                                 <h3>{{ product.name }}</h3>
                                 <img src="{{ product.image.url }}" width="150" height="150">
+                                {% if target_cafe.owner == user %}
                                 <a href="{% url 'cafeapp:update_product' pk=product.pk %}">수정</a>
+                                <a href="{% url 'cafeapp:delete_product' pk=product.pk %}">삭제</a>
+                                {% endif %}
                                 <p>{{ product.description|safe|linebreaksbr }}</p>
                                 <p>가격 : {{ product.price }}원</p>
                                 <form action="{% url 'cartapp:cart_add' product.id %}" method="post">
@@ -56,7 +59,11 @@
                 </div>
             </div><!-- /.blog-post -->
             {% endfor %}
-            <a href="{% url 'cafeapp:create_product' %}">제품 등록</a>
+            {% if target_cafe.owner == user %}
+            <div><a href="{% url 'cafeapp:create_product' %}">제품 등록</a></div>
+            <div><a href="{% url 'cafeapp:delete' pk=target_cafe.pk %}">카페 삭제</a></div>
+            <div><a href="{% url 'orderapp:list' %}">주문 리스트</a></div>
+            {% endif %}
         </div><!-- /.blog-main -->
     </div><!-- /.row -->
 

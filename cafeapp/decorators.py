@@ -11,6 +11,7 @@ def cafe_ownership_required(func):
         return func(request, *args, **kwargs)
     return decorated
 
+
 def product_ownership_required(func):
     def decorated(request, *args, **kwargs):
         product = Product.objects.get(pk=kwargs['pk'])
@@ -18,3 +19,5 @@ def product_ownership_required(func):
             return HttpResponseForbidden()
         return func(request, *args, **kwargs)
     return decorated
+
+

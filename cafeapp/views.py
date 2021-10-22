@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import transaction
@@ -18,9 +19,21 @@ from cartapp.forms import CartAddProductForm
 from cartapp.models import Cart
 
 
-@method_decorator(login_required, 'get')
-@method_decorator(login_required, 'post')
-class CafeCreateView(CreateView):
+class LoginRequired(AccessMixin):
+    """로그인, 프로필 체크 클래스"""
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        try:
+            request.user.profile
+        except:
+            return render(request, 'no_profile.html')
+        return super().dispatch(request, *args, **kwargs)
+
+
+# @method_decorator(login_required, 'get')
+# @method_decorator(login_required, 'post')
+class CafeCreateView(LoginRequired, CreateView):
     model = Cafe
     form_class = CafeCreationForm
     template_name = 'cafeapp/create.html'
@@ -35,11 +48,11 @@ class CafeCreateView(CreateView):
         return reverse('cafeapp:detail', kwargs={'pk': self.object.pk})
 
 
-
-class CafeDetailView(DetailView):
+class CafeDetailView(LoginRequired, DetailView):
     model = Cafe
     context_object_name = 'target_cafe'
     template_name = 'cafeapp/detail.html'
+
     def get_context_data(self, **kwargs):
         product_list = Product.objects.filter(cafe=self.object.pk)
         cart_product_form = CartAddProductForm()
@@ -63,7 +76,7 @@ class CafeUpdateView(UpdateView):
 class CafeDeleteView(DeleteView):
     model = Cafe
     context_object_name = 'target_cafe'
-    success_url = reverse_lazy('cafeapp:list')
+    success_url = reverse_lazy('index')
     template_name = 'cafeapp/delete.html'
 
 class CafeListView(ListView):
@@ -71,6 +84,13 @@ class CafeListView(ListView):
     context_object_name = 'cafe_list'
     ordering = ['-id']
     template_name = 'cafeapp/list.html'
+
+    # 카트 초기화
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     cart = Cart(self.request)
+    #     cart.clear()
+    #     return super(CafeListView, self).get_context_data(**kwargs)
+
     # def get_queryset(self):
     #     temp_list = Cafe.objects.filter()
     #
@@ -80,9 +100,9 @@ class CafeListView(ListView):
     #
     #     return queryset
 
-@method_decorator(login_required, 'get')
-@method_decorator(login_required, 'post')
-class ProductCreateView(CreateView):
+# @method_decorator(login_required, 'get')
+# @method_decorator(login_required, 'post')
+class ProductCreateView(LoginRequired, CreateView):
     model = Product
     form_class = ProductCreationForm
     template_name = 'cafeapp/create_product.html'
@@ -114,7 +134,9 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     context_object_name = 'target_product'
-    success_url = reverse_lazy('')
-    template_name = 'cafeapp/delete_product.htl'
+    template_name = 'cafeapp/delete_product.html'
+
+    def get_success_url(self):
+        return reverse('cafeapp:detail', kwargs={'pk': self.request.user.cafe.pk})
 
 

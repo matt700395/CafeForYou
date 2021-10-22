@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  {{user.cafe.name}}
+  {% now "Y년 m월 d일 - G시 i분 s초" %}<br>
+
+  <br><br>
+  ========================= {{user.cafe.name}} 주문 list =============================<br>
+  {% for order in order_list %}
+  날짜 : {{order.created | date:'Y년 m월 d일 - G시 i분 s초'}}  |  {{order.user.profile.name}}({{order.user}})님의 주문<br>
+  {{order.user.profile.age}} / {{order.user.profile.grade}}<br>
+
+  =====================================================================<br>
+  {% for item in order.items.all%}
+    제품명:{{item.product}}, 가격:{{item.price}}원, 수량:{{item.quantity}}개<br>==<br>
+  {% endfor %}
+    / created :  / updated : {{order.updated}}<br>
+  <a href="{% url 'orderapp:delete' pk=order.pk %}"><button>주문 수락</button></a><br>
+  =====================================================================<br>
+  {% endfor %}
+</div>
+{% endblock %}
