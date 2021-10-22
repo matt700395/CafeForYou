@@ -15,6 +15,7 @@
     제품명:{{item.product}}, 가격:{{item.price}}원, 수량:{{item.quantity}}개<br>==<br>
   {% endfor %}
     / created :  / updated : {{order.updated}}<br>
+  <a href="{% url 'orderapp:delete' pk=order.pk %}"><button>주문 수락</button></a><br>
   =====================================================================<br>
   {% endfor %}
 </div>

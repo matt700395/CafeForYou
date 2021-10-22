@@ -5,9 +5,12 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, DetailView, DeleteView
 
 from cartapp.models import Cart
+from orderapp.decorators import order_ownership_required
 from orderapp.forms import OrderCreateForm
 from orderapp.models import OrderItem, Order
 
@@ -23,8 +26,15 @@ class OrderListView(ListView):
         object_list.objects.filter(created__lte=datetime.now() - timedelta(minutes=5)).delete()
 
         order_list = object_list.objects.filter(cafe=self.request.user.cafe)
-        # if order_list.objects.filter(created=)
         return super(OrderListView, self).get_context_data(order_list=order_list, **kwargs)
+
+@method_decorator(order_ownership_required, 'get')
+@method_decorator(order_ownership_required, 'post')
+class OrderDeleteView(DeleteView):
+    model = Order
+    context_object_name = 'target_order'
+    success_url = reverse_lazy('index')
+    template_name = 'orderapp/delete.html'
 
 
 def order_create(request):
